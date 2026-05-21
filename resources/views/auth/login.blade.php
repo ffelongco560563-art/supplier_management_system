@@ -87,4 +87,7 @@
             Don't have an account? <a href="{{ route('register') }}" class="font-bold text-[#228B22] hover:underline">Register as Client</a>
         </p>
     </form>
+
+    
+
 </x-guest-layout>

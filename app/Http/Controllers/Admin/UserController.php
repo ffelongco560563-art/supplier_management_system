@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+
 class UserController extends Controller
 {
     /**
@@ -13,12 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Fetch users (adjust query as needed for your pagination/sorting)
-        $users = User::all(); 
+        // This query fetches users where the role is NOT 'admin'
+        $users = User::where('role', '!=', 'admin')->get();
+
         return view('admin.users', compact('users'));
     }
 
-    /**
+    /*
      * Approve a pending user.
      */
     public function approve(Request $request, $id)
@@ -87,12 +89,13 @@ class UserController extends Controller
     /**
      * Archive/Delete a user record.
      */
-    public function archive(Request $request)
+    public function archive(Request $request) 
     {
+        // Get the user_id from the hidden input field in your form
         $user = User::findOrFail($request->user_id);
-        $user->delete(); // Or $user->status = 'archived' depending on your DB setup
+        
+        $user->delete();
 
-        return redirect()->route('admin.users.index', ['status' => $request->active_tab])
-                         ->with('success', 'User record archived successfully.');
+        return back()->with('success', 'User archived successfully.');
     }
 }

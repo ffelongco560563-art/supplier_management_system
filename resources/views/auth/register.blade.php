@@ -14,7 +14,11 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" /></svg>
                     </span>
-                    <x-text-input id="first_name" class="pl-10" type="text" name="first_name" placeholder="First name" required />
+                    {{-- Added pattern to only allow letters/spaces and oninput to remove numbers/symbols as they type --}}
+                    <x-text-input id="first_name" class="pl-10" type="text" name="first_name" placeholder="First name" required 
+                        pattern="[A-Za-z\s]+" 
+                        title="First name should only contain letters"
+                        oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" />
                 </div>
             </div>
             <div class="flex-1">
@@ -23,7 +27,11 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" /></svg>
                     </span>
-                    <x-text-input id="last_name" class="pl-10" type="text" name="last_name" placeholder="Last name" required />
+                    {{-- Added pattern to only allow letters/spaces and oninput to remove numbers/symbols as they type --}}
+                    <x-text-input id="last_name" class="pl-10" type="text" name="last_name" placeholder="Last name" required 
+                        pattern="[A-Za-z\s]+" 
+                        title="Last name should only contain letters"
+                        oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" />
                 </div>
             </div>
         </div>
@@ -38,7 +46,6 @@
             </div>
         </div>
 
-        <!-- Password (Toggle Added) -->
         <div class="mb-4" x-data="{ show: false }">
             <x-input-label for="password" :value="__('Password:')" class="font-bold text-gray-700 mb-1 text-sm" />
             <div class="relative">
@@ -59,7 +66,6 @@
             </div>
         </div>
 
-        <!-- Confirm Password (Toggle Added) -->
         <div class="mb-6" x-data="{ show: false }">
             <x-input-label for="password_confirmation" :value="__('Confirm Password:')" class="font-bold text-gray-700 mb-1 text-sm" />
             <div class="relative">

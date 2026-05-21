@@ -13,4 +13,4 @@ class AdminMiddleware {
         // Otherwise, send them to the regular dashboard
         return redirect('/dashboard')->with('error', 'Access Denied.');
     }
-}
+}   

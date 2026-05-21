@@ -19,6 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         
     })
+
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'check.revoke' => \App\Http\Middleware\CheckRevoke::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+

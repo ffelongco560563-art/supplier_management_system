@@ -15,21 +15,21 @@
             /* This keeps the circle from shifting during load */
             .logo-wrapper {
                 contain: strict;
-                width: 176px; /* 44 * 4 for w-44 */
+                width: 176px;
                 height: 176px;
             }
         </style>
         <link rel="preload" as="image" href="{{ asset('images/logo.png') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col md:flex-row">
             
+            {{-- Left Side Panel: Stays Forest Green --}}
             <div class="flex flex-col flex-1 items-center justify-center p-12 text-center text-white" style="background-color: #228B22;">
-                
                 <div class="mb-6 flex items-center justify-center">
                     <img src="{{ asset('images/logo.png') }}" 
                         alt="DairyBest Logo" 
@@ -44,8 +44,12 @@
 
             <div class="flex-1 bg-white flex flex-col items-center justify-center p-6 relative">
     
+                {{-- Only this White Box has the dynamic top border color --}}
                 <div class="w-full {{ Request::is('login') || Request::is('forgot-password') ? 'max-w-md' : 'max-w-xl' }} bg-white px-10 py-8 rounded-3xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.2)] border border-gray-100 border-t-8" 
-                style="border-top-color: {{ Auth::check() && Auth::user()->status === 'declined' ? '#dc2626' : '#228B22' }};">
+                style="border-top-color: {{ 
+                    Auth::check() && Auth::user()->status === 'revoked' ? '#991b1b' : 
+                    (Auth::check() && Auth::user()->status === 'declined' ? '#dc2626' : '#228B22') 
+                }};">
                     
                     {{ $slot }}
                 </div>

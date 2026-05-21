@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DairyBest</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-50 text-gray-900 overflow-hidden">
-    <div class="flex h-screen overflow-hidden">
+<body class="font-sans antialiased bg-gray-50 text-gray-900">
+    <div class="flex h-screen">
         
-        <aside class="w-72 bg-[#228B22] text-white flex flex-col shadow-xl">
+        {{-- Sidebar Left Navigation Container --}}
+        <aside class="w-72 bg-gradient-to-b from-[#1a5d1a] via-[#1f6f1f] to-[#228B22] text-white flex flex-col shadow-xl z-30">
             {{-- Logo Section --}}
             <div class="pt-14 px-8 pb-8 flex items-center gap-0">
                 <div class="w-16 h-16 flex items-center justify-center flex-shrink-0">
@@ -31,87 +33,120 @@
 
             <div class="w-full border-t-2 border-white/20"></div>
 
-            {{-- Navigation --}}
+            {{-- Navigation Items --}}
             <nav class="flex-1 px-4 space-y-5 mt-8 overflow-y-auto">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
-                    <i class="fas fa-border-all text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Dashboard</span>
-                </a>
+                @if(Auth::user()->role === 'admin')
+                    {{-- ADMIN MENUS --}}
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-border-all text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Dashboard</span>
+                    </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition rounded-lg group">
-                    <i class="fas fa-box text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Inventory</span>
-                </a>
+                    <a href="{{ route('admin.inventory.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.inventory.index') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-box text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Inventory</span>
+                    </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition rounded-lg group">
-                    <i class="fas fa-shopping-cart text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Orders</span>
-                </a>
+                    <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.orders.*') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-shopping-cart text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Orders</span>
+                    </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition rounded-lg group">
-                    <i class="fas fa-truck text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Logistics</span>
-                </a>
+                    <a href="{{ route('admin.logistics.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.logistics.*') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-truck text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Logistics</span>
+                    </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition rounded-lg group">
-                    <i class="fas fa-file-lines text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Reports</span>
-                </a>
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.users.index') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-user-group text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Users</span>
+                    </a>
 
-                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.users.index') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
-                    <i class="fas fa-user-group text-[20px] w-6 text-center"></i>
-                    <span class="text-[16px] font-medium tracking-normal">Users</span>
-                </a>
+                    <a href="{{ route('admin.payments.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.payments.*') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }} transition rounded-lg group">
+                        <i class="fas fa-credit-card text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Payments</span>
+                    </a>
+                @else
+                    {{-- CLIENT CUSTOMER MENUS --}}
+                    <a href="{{ route('dashboard') }}" 
+                    class="flex items-center gap-3 px-4 py-3 transition rounded-lg group {{ request()->routeIs('dashboard') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <i class="fas fa-border-all text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Dashboard</span>
+                    </a>
+
+                    <a href="{{ route('client.shop') }}" 
+                    class="flex items-center gap-3 px-4 py-3 transition rounded-lg group {{ request()->routeIs('client.shop') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <i class="fas fa-bag-shopping text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Order Milk</span>
+                    </a>
+
+                    <a href="{{ route('client.my-orders') }}" 
+                    class="flex items-center gap-3 px-4 py-3 transition rounded-lg group {{ request()->routeIs('client.my-orders') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <i class="fas fa-shopping-cart text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">My Orders</span>
+                    </a>
+
+                    <a href="{{ route('client.payments') }}" 
+                    class="flex items-center gap-3 px-4 py-3 transition rounded-lg group {{ request()->routeIs('client.payments') ? 'bg-white text-[#228B22] rounded-lg shadow-sm' : 'text-white hover:bg-white/10' }}">
+                        <i class="fas fa-credit-card text-[20px] w-6 text-center"></i>
+                        <span class="text-[16px] font-medium tracking-normal">Payments</span>
+                    </a>
+                @endif
             </nav>
 
             <div class="w-full border-t-2 border-white/20"></div>
 
-            {{-- SIDEBAR PROFILE (Bottom) --}}
-            <div class="px-6 py-6 flex items-center gap-4 bg-[#228B22] mt-auto">
-                {{-- Fixed Letter Size and Alignment here --}}
+            {{-- Sidebar Profile (Bottom Element) --}}
+            <div class="px-6 py-6 flex items-center gap-4 bg-white/5 backdrop-blur-sm mt-auto border-t border-white/10">
                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-[#228B22] text-[26px] shadow-sm uppercase leading-none">
                     {{ strtoupper(substr(Auth::user()->first_name ?? Auth::user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
                     <p class="text-[15px] font-semibold text-white leading-tight truncate">Hello, {{ Auth::user()->first_name ?? Auth::user()->name }}!</p>
                     <p class="text-[11px] text-white/80 font-medium tracking-wide">
-                        {{ Auth::user()->role === 'admin' ? 'System Administrator' : 'Authorized Supplier' }}
+                        {{ Auth::user()->role === 'admin' ? 'System Administrator' : 'Client Customer' }}
                     </p>
                 </div>
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col overflow-hidden bg-white">
+        {{-- Content Area Right --}}
+        <div class="flex-1 flex flex-col overflow-hidden bg-gray-50">
             
-            <header class="w-full bg-white border-b border-gray-200 px-10 py-5 flex items-center justify-between shadow-sm z-10 h-[81px]">
+            {{-- Fixed Top App Header --}}
+            <header class="sticky top-0 w-full bg-white/70 backdrop-blur-xl border-b border-white/20 px-10 py-5 flex items-center justify-between shadow-sm z-50 h-[81px]">
                 <div class="flex items-center gap-3 text-[#6B7280]">
+                    {{-- Calendar Icon - Stroke increased to 3.5 to match the bold font weight layout --}}
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="6" width="18" height="15" rx="3" stroke="currentColor" stroke-width="2"/>
-                        <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M3 11H21" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="6" width="18" height="15" rx="3" stroke="currentColor" stroke-width="3.5"/>
+                        <path d="M16 2V6" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                        <path d="M8 2V6" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                        <path d="M3 11H21" stroke="currentColor" stroke-width="3.5"/>
                     </svg>
-                    <span class="text-[16px] font-normal tracking-tight">
-                        {{ date('l, F j, Y') }} | <span id="live-clock" class="font-normal text-[#6B7280]">{{ date('h:i A') }}</span>
+                    <span class="text-[16px] font-bold tracking-tight">
+                        {{ date('l, F j, Y') }} | <span id="live-clock" class="font-bold text-[#6B7280]">{{ date('h:i A') }}</span>
                     </span>
                 </div>
 
                 <div class="flex items-center gap-5">
+                    {{-- Dropdown Element Wrapper --}}
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center focus:outline-none">
-                            {{-- HEADER PROFILE CIRCLE --}}
                             <div class="h-10 w-10 rounded-full bg-[#228B22] flex items-center justify-center text-white font-bold border-2 border-white shadow-sm hover:opacity-90 transition uppercase text-[20px] leading-none">
                                 {{ strtoupper(substr(Auth::user()->first_name ?? Auth::user()->name, 0, 1)) }}
                             </div>
                         </button>
 
-                        <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                        {{-- Dropdown Content Panel --}}
+                        <div x-show="open" 
+                             @click.away="open = false" 
+                             x-transition 
+                             class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+                             style="display: none;">
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
                                 <i class="far fa-user-circle"></i> Profile
                             </a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-                                <i class="fas fa-cog"></i> Settings
-                            </a>
+                            
                             <hr class="my-1 border-gray-100">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -124,12 +159,14 @@
                 </div>
             </header>
 
+            {{-- Main Dashboard Dynamic Content Slots --}}
             <main class="flex-1 overflow-y-auto bg-gray-50 p-10">
                 {{ $slot }}
             </main>
         </div>
     </div>
 
+    {{-- Live Clock Counter Engine --}}
     <script>
         function updateClock() {
             const now = new Date();
