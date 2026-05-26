@@ -12,7 +12,7 @@ class OrderController extends Controller
     {
         $orders = Order::with('user')->orderBy('created_at', 'desc')->get();
         $trucks = Truck::all();
-        return view('admin.Order', compact('orders', 'trucks'));
+        return view('admin.order', compact('orders', 'trucks'));
     }
 
     public function approve(Request $request, $id)
