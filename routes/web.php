@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Client\PaymentController;
 
 // 1. Welcome Page
+
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
